@@ -1,28 +1,41 @@
-# ابزار انتقال فایل بین هاست‌های cPanel
+# cPanel File Mover — انتقال فایل بین هاست‌های cPanel
 
-این پروژه یک ابزار خط فرمان ساده برای جابجایی فایل‌ها بین دو هاست (مانند هاست‌های cPanel) از طریق SFTP فراهم می‌کند. این ابزار از دانلود موقت به ماشین محلی و سپس آپلود به مقصد استفاده می‌کند.
+این پروژه یک ابزار خط فرمان ساده و قابل اعتماد برای جابجایی فایل‌ها بین دو هاست (مثل هاست‌های cPanel) از طریق SFTP فراهم می‌کند. ابزار به‌صورت بازگشتی پوشه‌ها و فایل‌ها را منتقل می‌کند و پیشرفت را نمایش می‌دهد.
 
-ویژگی‌ها:
-- انتقال فایل‌ها و دایرکتوری‌ها (به‌صورت بازگشتی)
-- پشتیبانی از ورود با رمز عبور یا کلید خصوصی
-- نمایش پیشرفت با `tqdm`
+---
 
-نیازمندی‌ها:
+# cPanel File Mover — Move files between cPanel hosts
+
+This project is a small CLI tool to move files and directories between two hosts (for example, cPanel servers) using SFTP. It downloads source data into a temporary directory and uploads it to the destination.
+
+Features / ویژگی‌ها:
+- Recursive directory transfers / انتقال بازگشتی دایرکتوری
+- Password or private-key authentication / پشتیبانی از رمز یا کلید خصوصی
+- Progress bars with `tqdm` / نمایش پیشرفت با `tqdm`
+
+Requirements / نیازمندی‌ها:
 - Python 3.8+
 - See `requirements.txt`
 
-نمونه استفاده:
+Quick examples / مثال‌های سریع:
 
-1. انتقال از `user1@host1:/path/to/dir` به `user2@host2:/path/to/dest` (رمزها از شما درخواست می‌شود):
+1) Transfer from remote to remote (password prompts):
 
-```
+```bash
 python cli.py user1@host1:/var/www/html user2@host2:/home/user2/www
 ```
 
-2. استفاده از کلید خصوصی برای ورود به هاست مبدأ یا مقصد:
+2) Use private keys:
 
-```
-python cli.py --src-key ~/.ssh/id_rsa user1@host1:/var/www/html user2@host2:/home/user2/www
+```bash
+python cli.py --src-key ~/.ssh/id_rsa --dst-key ~/.ssh/id_rsa user1@host1:/path user2@host2:/dest
 ```
 
-توضیحات بیشتر و گزینه‌ها را با `-h` مشاهده کنید.
+3) Force password prompt explicitly:
+
+```bash
+python cli.py --src-pass PROMPT --dst-pass PROMPT user1@host1:/path user2@host2:/dest
+```
+
+See `python cli.py -h` for more options.
+

@@ -3,7 +3,7 @@ import argparse
 import getpass
 import sys
 
-from cpanel_mover.sftp_transfer import transfer
+from cpanel_file_mover import transfer
 
 
 def main():
@@ -24,10 +24,15 @@ def main():
     if args.dst_key:
         dst_auth['pkey'] = args.dst_key
 
-    # prompt for passwords only if needed
-    if args.src_pass:
+    # prompt for passwords if provided as flag value 'PROMPT'
+    if args.src_pass == 'PROMPT':
+        src_auth['password'] = getpass.getpass(f"Password for source ({args.source}): ")
+    elif args.src_pass:
         src_auth['password'] = args.src_pass
-    if args.dst_pass:
+
+    if args.dst_pass == 'PROMPT':
+        dst_auth['password'] = getpass.getpass(f"Password for dest ({args.dest}): ")
+    elif args.dst_pass:
         dst_auth['password'] = args.dst_pass
 
     try:
